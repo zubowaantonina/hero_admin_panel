@@ -17,12 +17,6 @@
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
-    },
-    {
-      "id": "818aecad-65cd-4b3f-a711-164e67fdc5d8",
-      "name": "Антонина",
-      "description": "vvv",
-      "element": "earth"
     }
   ],
   "filters": [

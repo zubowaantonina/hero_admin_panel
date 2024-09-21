@@ -1,8 +1,9 @@
-import { createStore, combineReducers, compose, applyMiddleware } from "redux";
-import { thunk } from "redux-thunk";
+
+import { configureStore } from "@reduxjs/toolkit";
 
 import heroes from "../reducers/heroes";
 import filters from "../reducers/filters";
+
 
 // enhancer может дополнять любую ф-цию store
 // middelware дополняет только dispatch
@@ -28,22 +29,30 @@ import filters from "../reducers/filters";
 // const stribgMiddelware = (store) => (dispatch) => (action) => {
 // т.е. в первой ф-ции не указан аргумент store, во второй переименован аргумент dispatch
 const stribgMiddelware = () => (next) => (action) => {
-  if (typeof action === "string") {
-    return next({
-      type: action,
-    });
-  }
-  return next(action);
+     if (typeof action === "string") {
+          return next({
+               type: action,
+          });
+     }
+     return next(action);
 };
 
 // thunk - это middelware, кот позволяет dispatch-чить ф-ции, в том числе и асинхронные ф-ции!!!
 
-const store = createStore(
-  combineReducers({ heroes, filters }),
-  compose(
-    applyMiddleware(thunk, stribgMiddelware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+// const store = createStore(
+//   combineReducers({ heroes, filters }),
+//   compose(
+//     applyMiddleware(thunk, stribgMiddelware),
+//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+//   )
+// );
+
+
+const store = configureStore({
+     reducer: { heroes, filters },
+     middleware: (getDefaultMiddelware) =>
+       getDefaultMiddelware().concat(stribgMiddelware),
+     devTools: process.env.NODE_ENV !== "production",
+   });
 
 export default store;
